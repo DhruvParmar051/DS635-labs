@@ -1,0 +1,9 @@
+name,N,seconds,gflops,check
+rung0_python_naive,256,0.5771,0.06,PASS
+rung1_numpy,2048,0.0185,928.73,PASS
+rung2_c_naive,2048,54.5593,0.31,PASS
+rung3_c_reorder,2048,2.0025,8.58,PASS
+rung4_c_simd,1024,0.0421,50.96,PASS
+rung4_c_simd,2048,0.3540,48.53,PASS
+rung5_c_tiled,2048,0.5507,31.20,PASS
+rung6_c_openmp,2048,0.0634,270.99,PASS
