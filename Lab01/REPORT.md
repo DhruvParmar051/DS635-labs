@@ -140,3 +140,24 @@ The roofline predicts every point to three significant figures: my wall is **sin
 **(1) Memory bandwidth** — 16 threads demand 549 GB/s at 0.5 FLOP/byte and then it stops: **16 → 18 gains nothing** (274.52 → 272.71). **(2) Shared LLC capacity** — the 16 MB L2 splits across its cluster's 6 cores, and the **first sag is at 4→6 threads**, efficiency 96% → 82%, exactly where the Super cluster fills. **(3) Core heterogeneity/clock** — 6 "Super" vs 12 "Performance" cores, and `OMP_PLACES=cores` can't help since `lscpu` reports one undifferentiated 18-core cluster.
 
 **A fourth cause actually shapes my table: load imbalance.** The parallel loop has only **16 iterations** at N=2048/T=128, so `schedule(static)` over 12 threads caps effective parallelism at 16/2 = **8** — predicting 158.99 against **161.95 measured, within 2%**; at 16 threads each gets 1 chunk and it jumps to 11.78×. Re-running at N=3072 (24 tiles) removes the artifact: **9.02× at 12 threads**.
+
+---
+
+# Stretch — Break the harness on purpose (`-ffast-math`)
+
+**Prediction:** removing `-ffast-math` should cost most of the SIMD speedup, since vectorizing a float sum requires reassociating additions, which IEEE-754 forbids by default.
+
+**Measured — it cost nothing.** All rows below were measured in one pass; absolute values sit ~1.6× under §2 because the machine was under sustained load by then, so only within-table ratios are meaningful.
+
+| Build (N=2048, 3 reps) | GFLOP/s | vector `fmla v.4s` |
+| --- | ---: | ---: |
+| `rung4` SIMD, `-ffast-math` | **32.01** | 90 |
+| `rung4` SIMD, strict IEEE-754 | **31.99** | 90 |
+| `rung3` scalar reorder, untiled | 5.49 | 0 |
+| `rung3` scalar reorder, tiled T=128 | 4.79 | 0 |
+
+**None** of rung 4's SIMD speedup depended on reordering float additions — identical throughput, identical 90 vector FMAs either way. Rung 3 had already removed the reduction: the `i-k-j` inner loop is `C[i*n+j] += a * B[k*n+j]`, elementwise across `j` with **no cross-iteration dependency**, so each lane accumulates into a *different* `C` element and vectorizing changes no summation order at all. It is bit-exact under IEEE-754, so the compiler needs no permission.
+
+The rung where reassociation **is** required is the naive `i-j-k` loop, whose `s += A[i*n+k] * B[k*n+j]` is a true reduction over `k`: vector `fmla` counts go **14 → 0** when `-ffast-math` is dropped. IEEE-754 forbids that by default because float addition is **not associative** — `(a+b)+c ≠ a+(b+c)` under rounding — so splitting one serial sum into 4 lane-partial sums gives a different, equally valid result, and the standard requires reproducible rounding. Tellingly, allowing it there *loses*: **0.45 GFLOP/s with `-ffast-math` vs 0.58 without**, because that loop misses cache on every `B` access (Part 2), and widening the arithmetic cannot help something bound entirely on memory.
+
+*Corroborating Part 4:* rebuilt with scalar flags, tiling gains **nothing** over the untiled scalar reorder — **4.79 vs 5.49 GFLOP/s**, a 13% loss. Roofline in miniature: tiling only pays once the compute roof is high enough to hit the memory wall, and neither the scalar rung nor (on this machine) the SIMD rung ever gets there.
