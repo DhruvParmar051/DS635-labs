@@ -145,9 +145,7 @@ There is a fourth thing that actually shapes my table, which is load imbalance. 
 
 # Stretch — Break the harness on purpose (`-ffast-math`)
 
-I predicted that removing `-ffast-math` would cost most of the SIMD speedup, since vectorizing a float sum means reassociating additions and IEEE-754 forbids that by default.
-
-It cost nothing. Everything below was measured in one pass; the absolute values sit about 1.6× under the tables in §2 because the machine was under sustained load by then, so only the ratios within this table are meaningful.
+I predicted that dropping `-ffast-math` would cost most of the SIMD speedup. It cost nothing. Absolute values sit ~1.6× under §2 because the machine was under load, so only the ratios here are meaningful.
 
 | Build (N=2048, 3 reps) | GFLOP/s | vector `fmla v.4s` |
 | --- | ---: | ---: |
@@ -156,8 +154,6 @@ It cost nothing. Everything below was measured in one pass; the absolute values 
 | `rung3` scalar reorder, untiled | 5.49 | 0 |
 | `rung3` scalar reorder, tiled T=128 | 4.79 | 0 |
 
-None of rung 4's speedup depended on reordering additions, and the vector FMA count is identical either way. Rung 3 had already removed the reduction: the `i-k-j` inner loop is `C[i*n+j] += a * B[k*n+j]`, which is elementwise across `j` with no dependency between iterations, so each lane accumulates into a different element of C and the summation order never changes. It is bit-exact under IEEE-754, so the compiler does not need permission.
+Rung 3 had already removed the reduction: `C[i*n+j] += a * B[k*n+j]` is elementwise across `j`, so each lane accumulates into a different element of C, the summation order never changes, and vectorizing is bit-exact under IEEE-754 without any permission. The rung that does need reassociation is the naive `i-j-k` loop, where `s += ...` is a real reduction and `fmla` goes 14 → 0 without the flag — yet allowing it there loses (0.45 vs 0.58 GFLOP/s), since that loop is limited by cache misses, not arithmetic.
 
-The rung that does need reassociation is the naive `i-j-k` loop, where `s += A[i*n+k] * B[k*n+j]` is a real reduction over `k`. There the vector `fmla` count goes from 14 to 0 once `-ffast-math` is dropped. IEEE-754 forbids it because float addition is not associative, `(a+b)+c` and `a+(b+c)` round differently, so splitting one serial sum into 4 lane sums gives a different though equally reasonable answer, and the standard requires reproducible rounding. What is interesting is that allowing it there actually loses, 0.45 GFLOP/s with `-ffast-math` against 0.58 without, because that loop misses cache on every B access and wider arithmetic cannot help something limited by memory.
-
-This also backs up Part 4. Rebuilt with the scalar flags, tiling gains nothing over the untiled scalar reorder, 4.79 against 5.49 GFLOP/s, a 13% loss. It is the roofline in miniature: tiling only pays once the compute roof is high enough to hit the memory wall, and neither the scalar rung nor the SIMD rung on this machine ever gets there.
+Tiling with scalar flags confirms Part 4: 4.79 against 5.49 GFLOP/s untiled, a 13% loss. Tiling only pays once the compute roof is high enough to hit the memory wall.
