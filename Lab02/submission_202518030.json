@@ -1,0 +1,170 @@
+{
+  "answers": {
+    "fence_penalty_ratio": 2.4760546282658296,
+    "graph_cpu_speedup": 15.163069763519676,
+    "launch_bound_elements": 1048576,
+    "nosync_over_peak": 761.5935883910644,
+    "overlap_efficiency": 1.3213557565147407,
+    "peak_efficiency": 0.5380217943322084,
+    "peak_measured_tflops": 4.357976534090888,
+    "peak_vendor_tflops": 8.1,
+    "pinning_helps_below_mb": 256
+  },
+  "env": {
+    "ac_power": null,
+    "arch": "Tesla T4",
+    "backend": "CUDA 12.8",
+    "caps": {
+      "events": true,
+      "graphs": true,
+      "pinned": true,
+      "streams": true
+    },
+    "clock_ghz_reported": 1.59,
+    "device": "Tesla T4",
+    "exported_utc": "2026-08-17T04:53:18+00:00",
+    "iters": 30,
+    "matmul_n": 4096,
+    "multi_processor_count": 40,
+    "peak_tflops_declared": 8.1,
+    "platform": "Linux-6.6.122+-x86_64-with-glibc2.35",
+    "safe_mode": false,
+    "started_utc": "2026-08-17T04:53:01+00:00",
+    "torch": "2.11.0+cu128",
+    "vendor": "cuda",
+    "vram_gb": 15.64
+  },
+  "integrity": {
+    "sha256": "fa4cab829abc509d"
+  },
+  "results": {
+    "fence": {
+      "intervals": [
+        1,
+        2,
+        5,
+        10,
+        25,
+        50,
+        100,
+        250,
+        500
+      ],
+      "n_ops": 500,
+      "totals_ms": [
+        13.308358666658174,
+        9.124305999989701,
+        7.12027266666837,
+        6.462305666673274,
+        6.034922333318112,
+        5.958771333325785,
+        5.554969000002075,
+        5.561304000006355,
+        5.374824333330253
+      ]
+    },
+    "graph": {
+      "captured": true,
+      "eager_cpu_ms": 1.5961629799994626,
+      "eager_gpu_ms": 1.5686860656738282,
+      "graph_cpu_ms": 0.10526647999995475,
+      "graph_gpu_ms": 0.5759072113037109,
+      "n_ops": 200
+    },
+    "launch": {
+      "submit_us": 8.031282500013504
+    },
+    "overlap": {
+      "compute_ms": 32.171706999997696,
+      "copy_ms": 10.854552400002149,
+      "matmul_n": 4096,
+      "mb": 128,
+      "overlap_ms": 32.562206799997284,
+      "serial_ms": 36.83077649999973
+    },
+    "peak": {
+      "derived_clock_ghz": 1.59,
+      "derived_lanes": 64,
+      "derived_tflops": 8.1408,
+      "derived_units": 40,
+      "efficiency": 0.5380217943322084,
+      "measured_sizes": [
+        1024,
+        2048,
+        4096
+      ],
+      "measured_tflops": 4.357976534090888,
+      "measured_tflops_all": [
+        3.8936193755653634,
+        4.357976534090888,
+        4.312851272572296
+      ],
+      "vendor_source": "TechPowerUp GPU database, Tesla T4 (FP32 non-tensor)",
+      "vendor_tflops": 8.1
+    },
+    "submission": {
+      "flop": 137438953472,
+      "implied_tflops": {
+        "event": 4.280247739811645,
+        "nosync": 6168.908065967621,
+        "sync": 4.309862558113817
+      },
+      "iters": 30,
+      "n": 4096,
+      "t_event_ms": 32.11004638671875,
+      "t_nosync_ms": 0.02227929999965757,
+      "t_sync_ms": 31.88940519999998
+    },
+    "sweep": {
+      "per_op_us": [
+        14.683359861373901,
+        8.686720132827759,
+        8.176159858703613,
+        8.053920269012451,
+        8.151040077209473,
+        26.85136079788208,
+        144.7321605682373,
+        578.8343811035156
+      ],
+      "sizes": [
+        1,
+        16,
+        256,
+        4096,
+        65536,
+        1048576,
+        4194304,
+        16777216
+      ]
+    },
+    "transfer": {
+      "bw_pageable_gbs": [
+        2.852157432007343,
+        3.8195593892073365,
+        6.57683059883329,
+        6.738675958397806,
+        5.993393620710109
+      ],
+      "bw_pinned_gbs": [
+        8.124402432963347,
+        11.54724321978028,
+        12.152616704947269,
+        12.23889464734066,
+        12.345766359977885
+      ],
+      "sizes_mb": [
+        1,
+        4,
+        16,
+        64,
+        256
+      ],
+      "skipped": null
+    }
+  },
+  "schema_version": 2,
+  "student": {
+    "name": "Dhruv Parmar",
+    "roll": "202518030"
+  }
+}
