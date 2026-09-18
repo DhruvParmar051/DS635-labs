@@ -1,0 +1,122 @@
+{
+  "roll": "202518030",
+  "name": "Dhruv Parmar",
+  "env": {
+    "platform": "Linux-6.12.76-linuxkit-aarch64-with-glibc2.41",
+    "python": "3.11.16",
+    "torch": "2.14.0+cpu",
+    "safetensors": "0.8.0",
+    "linux": true
+  },
+  "results": {
+    "formats": {
+      "pt": {
+        "file_mb": 251.7,
+        "cold_s": 0.021,
+        "warm_s": 0.011,
+        "cold_read_bytes_mb": 251.7,
+        "load_rss_delta_mb": 246.8,
+        "load_rss_delta_inprocess_mb": 0.0,
+        "load_rchar_mb": 251.7
+      },
+      "safetensors": {
+        "file_mb": 251.7,
+        "cold_s": 0.0,
+        "warm_s": 0.0,
+        "cold_read_bytes_mb": 0.4,
+        "load_rss_delta_mb": 2.0,
+        "load_rss_delta_inprocess_mb": 0.1,
+        "cold_touch_s": 0.028,
+        "warm_touch_s": 0.003,
+        "load_rchar_mb": 0.0,
+        "explicit_read_rchar_mb": 251.7
+      },
+      "gguf": {
+        "file_mb": 251.7,
+        "cold_s": 0.0,
+        "warm_s": 0.0,
+        "cold_read_bytes_mb": 0.1,
+        "load_rss_delta_mb": 0.3,
+        "load_rss_delta_inprocess_mb": 0.1,
+        "cold_touch_s": 0.066,
+        "warm_touch_s": 0.023,
+        "load_rchar_mb": 0.0,
+        "bytes_identical_to_state_dict": true
+      }
+    },
+    "stride": {
+      "transpose_same_ptr": true,
+      "contig_sizes_mb": [
+        16.8,
+        67.1,
+        151.0,
+        268.4
+      ],
+      "contig_times_ms": [
+        2.23,
+        11.52,
+        30.82,
+        47.85
+      ],
+      "safetensors_refused_view": true
+    },
+    "trust": {
+      "payload_fired_default": false,
+      "blocked_by_weights_only": true,
+      "payload_fired_unsafe": true
+    },
+    "gguf_real": {
+      "arch": "qwen2",
+      "vocab_size": 152064,
+      "n_kv_read": 26,
+      "unhandled_type_tags": [
+        5
+      ],
+      "full_parse": {
+        "gguf_version": 3,
+        "n_tensors": 339,
+        "n_kv": 34,
+        "arch": "qwen2",
+        "name": "Qwen2.5 7B Instruct",
+        "file_type": 15,
+        "hparams": {
+          "block_count": 28,
+          "context_length": 32768,
+          "embedding_length": 3584,
+          "feed_forward_length": 18944,
+          "attention.head_count": 28,
+          "attention.head_count_kv": 4,
+          "rope.freq_base": 1000000.0,
+          "attention.layer_norm_rms_epsilon": 9.999999974752427e-07
+        },
+        "vocab_size": 152064,
+        "tokenizer_model": "gpt2",
+        "value_types_present": [
+          "ARRAY",
+          "BOOL",
+          "FLOAT32",
+          "INT32",
+          "STRING",
+          "UINT32"
+        ],
+        "keys_needing_unhandled_types": {
+          "tokenizer.ggml.token_type": [
+            "ARRAY",
+            "INT32"
+          ],
+          "tokenizer.ggml.add_bos_token": [
+            "BOOL"
+          ]
+        },
+        "lab_parser_stopped_at": "tokenizer.ggml.token_type"
+      }
+    }
+  },
+  "answers": {
+    "warm_faster_than_cold": true,
+    "safetensors_rss_near_zero": true,
+    "contiguous_cost_grows": true,
+    "weights_only_blocked_it": true,
+    "safetensors_still_cannot": "backdoored/adversarial weights (format only guarantees bytes are tensors, not what they compute); trust_remote_code modelling code that runs regardless of weight format; provenance/tampering (needs hashes/signatures, not a format)"
+  }
+}
