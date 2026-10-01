@@ -1,0 +1,127 @@
+{
+  "roll": "202518030",
+  "name": "Dhruv Parmar",
+  "env": {
+    "platform": "macOS-27.0-arm64-arm-64bit",
+    "python": "3.11.15",
+    "torch": "2.14.0",
+    "transformers": "5.17.0",
+    "numpy": "2.4.6",
+    "seed": 881596549,
+    "target": "gpt2",
+    "draft": "distilgpt2",
+    "linux": false
+  },
+  "results": {
+    "accept": {
+      "positions": [
+        0,
+        1,
+        2
+      ],
+      "empirical": [
+        0.717,
+        1.0,
+        0.332
+      ],
+      "theoretical": [
+        0.714,
+        1.0,
+        0.333
+      ]
+    },
+    "emit": {
+      "target_p0": [
+        0.5,
+        0.2,
+        0.1,
+        0.1,
+        0.1
+      ],
+      "empirical": [
+        0.5,
+        0.2,
+        0.099,
+        0.1,
+        0.101
+      ],
+      "tv_distance": 0.0014
+    },
+    "broken": {
+      "tv_distance": 0.1205
+    },
+    "vector": {
+      "agreement": 1.0,
+      "n_checks": 3000
+    },
+    "stitch": {
+      "target": "gpt2",
+      "draft": "distilgpt2",
+      "k": 4,
+      "n_tokens": 24,
+      "identical_to_greedy": true,
+      "target_passes": 6,
+      "accept_lengths": [
+        4,
+        1,
+        4,
+        4,
+        4,
+        2
+      ]
+    },
+    "timing": {
+      "plain_s": 0.461,
+      "spec_s": 0.406,
+      "speedup": 1.136,
+      "target_passes": 6,
+      "draft_passes": 24,
+      "acceptance_length": 4.0,
+      "one_target_pass_ms": 14.85,
+      "one_draft_pass_ms": 9.62,
+      "draft_cost_ratio": 0.647
+    },
+    "k_sweep": [
+      {
+        "k": 1,
+        "target_passes": 13,
+        "draft_passes": 13,
+        "acceptance_length": 1.846,
+        "mean_accepted_run": 0.923,
+        "wall_s": 0.41,
+        "speedup_vs_plain": 1.124,
+        "identical": true
+      },
+      {
+        "k": 2,
+        "target_passes": 9,
+        "draft_passes": 18,
+        "acceptance_length": 2.667,
+        "mean_accepted_run": 1.778,
+        "wall_s": 0.395,
+        "speedup_vs_plain": 1.166,
+        "identical": true
+      },
+      {
+        "k": 4,
+        "target_passes": 6,
+        "draft_passes": 24,
+        "acceptance_length": 4.0,
+        "mean_accepted_run": 3.167,
+        "wall_s": 0.406,
+        "speedup_vs_plain": 1.135,
+        "identical": true
+      },
+      {
+        "k": 8,
+        "target_passes": 3,
+        "draft_passes": 24,
+        "acceptance_length": 8.0,
+        "mean_accepted_run": 7.333,
+        "wall_s": 0.348,
+        "speedup_vs_plain": 1.323,
+        "identical": true
+      }
+    ]
+  }
+}

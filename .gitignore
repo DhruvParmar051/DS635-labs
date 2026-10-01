@@ -1,0 +1,7 @@
+# macOS
+.DS_Store
+
+# Build / generated data
+build/
+data/
+__pycache__/
